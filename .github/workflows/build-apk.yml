@@ -15,20 +15,25 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Capacitor
+      - name: Install Capacitor CLI and Core
         run: |
-          npm init -y
+          npm install -g @capacitor/cli
           npm install @capacitor/core @capacitor/android
+
+      - name: Initialize Capacitor
+        run: |
           npx cap init ALSmartPOS com.yourcompany.smartpos --web-dir=.
+
+      - name: Add Android Platform
+        run: |
           npx cap add android
 
-      - name: Copy web files
+      - name: Copy index.html to Android assets
         run: |
+          mkdir -p android/app/src/main/assets/public
           cp index.html android/app/src/main/assets/public/
-          cp icon-192.png android/app/src/main/res/drawable/
-          cp icon-512.png android/app/src/main/res/drawable/
 
-      - name: Setup JDK
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
